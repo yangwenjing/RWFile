@@ -42,7 +42,7 @@ public class ReadMatrixFile extends AbsReadFile {
 				matrix[i] = new Cell[100];
 				for(int j=0;j<100;j++)
 				{
-					matrix[i][j]=new Cell(i,j,0);
+					matrix[i][j] = new Cell(i,j,0);
 				}
 			}
 			fr = new FileReader(file);
@@ -53,9 +53,7 @@ public class ReadMatrixFile extends AbsReadFile {
 				if(line=="")
 					continue;
 				
-				String[]arrl = line.split(" ");
-				if(arrl.length!=3)
-					continue;
+				String[]arrl = line.split("\t");
 				setCell(arrl);
 			}
 			reader.close();
@@ -99,11 +97,11 @@ public class ReadMatrixFile extends AbsReadFile {
 	{
 		while(denseCells.size()>0)
 		{
-			String[] key = null;
-			denseCells.keySet().toArray(key);
+			Object[] keys = null;
+			keys = denseCells.keySet().toArray();
 			Cell.addClusterCounter();
 			clusterScale=0;
-			getSubCluster(key[0]);
+			getSubCluster((String) keys[0]);
 			
 		}
 	}
@@ -146,21 +144,15 @@ public class ReadMatrixFile extends AbsReadFile {
 	}
 	private static void setCell(String[] arrl) {
 		// TODO Auto-generated method stub
-		int x = Integer.parseInt(arrl[0]);
-		int y = Integer.parseInt(arrl[1]);
-		int num = Integer.parseInt(arrl[2]);
-		matrix[x][y].num = num;
+		int x = Integer.parseInt(arrl[1]);
+		int y = Integer.parseInt(arrl[2]);
+		int num = Integer.parseInt(arrl[0]);
+		matrix[x][y] = new Cell(x,y,num);
 		
 		if(num>threshold){
 			String key = getKey(x, y);
-			if(denseCells.containsKey(key))
-			{
-				denseCells.get(key).num = num;
-			}
-			else{
-				denseCells.put(key,matrix[x][y]);
-			}
-		
+			denseCells.put(key,matrix[x][y]);
+			
 		}
 	}
 
