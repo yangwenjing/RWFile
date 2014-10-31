@@ -34,7 +34,7 @@ public class Cell implements Comparable<Cell>{
 	
 	public String toString()
 	{
-		return String.format("%d %d %d %d", this.x, this.y, this.num, this.cluster);
+		return String.format("%d %d %d %d", this.x, this.y, this.num, this.cluster*100);
 	}
 
 	

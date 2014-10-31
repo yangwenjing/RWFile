@@ -86,7 +86,7 @@ public class ReadMatrixFile extends AbsReadFile {
 		{
 			for(int j=0;j<100;j++)
 			{
-				fw.write(matrix[i][j].toString()+"\r\n");
+				fw.write(matrix[i][j].toString()+"\r\n\r\n");
 			}
 		}
 		fw.close();
