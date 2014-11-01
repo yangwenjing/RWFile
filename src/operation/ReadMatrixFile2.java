@@ -43,9 +43,9 @@ public class ReadMatrixFile2 extends AbsReadFile {
 	 */
 	@Override
 	public void dealWithFile(File file) {
-		// TODO Auto-generated method stub
+		// 主体处理函数
 		FileReader fr;
-		// TODO Auto-generated method stub
+		
 		try {
 			fr = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fr);
@@ -56,9 +56,9 @@ public class ReadMatrixFile2 extends AbsReadFile {
 					continue;
 				
 				String[]arrl = line.split("\t");
-				int x = Integer.parseInt(arrl[1]);
-				int y = Integer.parseInt(arrl[2]);
-				int num = Integer.parseInt(arrl[0]);
+				int x = Integer.parseInt(arrl[0]);
+				int y = Integer.parseInt(arrl[1]);
+				int num = Integer.parseInt(arrl[2]);
 				
 				Cell c = new Cell(x,y,num);
 				if(pass(c))
@@ -151,6 +151,10 @@ public class ReadMatrixFile2 extends AbsReadFile {
 					enqueueNext(pcell.x-1,pcell.y);
 					enqueueNext(pcell.x,pcell.y+1);
 					enqueueNext(pcell.x+1,pcell.y);
+					enqueueNext(pcell.x-1,pcell.y-1);
+					enqueueNext(pcell.x-1,pcell.y+1);
+					enqueueNext(pcell.x+1,pcell.y-1);
+					enqueueNext(pcell.x+1,pcell.y+1);
 						
 				}
 			}
