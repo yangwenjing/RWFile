@@ -13,4 +13,5 @@ public class config {
 	public static String txt_file_dir = "D:\\region\\100X100data";
 	public static String output_file_dir = "D:\\region\\output";
 	public static int threshold=80;
+	public static int regionScale=200;
 }

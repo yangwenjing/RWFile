@@ -29,6 +29,9 @@ public class ReadMatrixFile2 extends AbsReadFile {
 	public static HashMap<String, Cell> cellsMap=new HashMap<String, Cell>();
 	public static Queue<Cell> queue = new Queue<Cell>();//初始化队列
 	public static int threshold = config.threshold;
+	public static int regionScale = config.regionScale;
+	
+	public static int scaleCount = 0;
 	
 	public static String getKey(int x, int y) {
 		String key = String.format("%d_%d", x,y);
@@ -108,7 +111,7 @@ public class ReadMatrixFile2 extends AbsReadFile {
 					fw.write(c.toString()+"\r\n");
 				}
 				else{
-					fw.write(i+" "+j+" 0 "+-1+"\r\n\r\n");
+					fw.write(i+" "+j+" 0 0"+"\r\n\r\n");
 				}
 			}
 		}
@@ -133,8 +136,13 @@ public class ReadMatrixFile2 extends AbsReadFile {
 			if(!c.isUsed())
 			{
 				Cell.addClusterCounter();
+				if(Cell.clusterCount<=0)
+					break;
 				c.setCluster();
+				
+				scaleCount=0;
 				queue.enqueue(c);
+				scaleCount++;
 				while(!queue.isEmpty())
 				{
 					Cell pcell = queue.dequeue();
@@ -155,6 +163,8 @@ public class ReadMatrixFile2 extends AbsReadFile {
 	 * @param y
 	 */
 	public void enqueueNext(int x, int y) {
+		if(scaleCount>regionScale)
+			return;
 		String key;
 		key = getKey(x,y);
 		
@@ -164,6 +174,7 @@ public class ReadMatrixFile2 extends AbsReadFile {
 			if(!next.isUsed())
 			{
 				next.setCluster();
+				scaleCount++;
 				queue.enqueue(next);
 			}
 		}
