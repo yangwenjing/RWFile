@@ -1,11 +1,15 @@
 package entity;
 
+import java.util.Collections;
+
 public class Cell implements Comparable<Cell>{
 	public int x;
 	public int y;
 	public int num;
 	public int cluster=-1;//代表所在的区域编号， 为-1时为没有编号。
 	private static int clusterCount = 0;
+	
+	private boolean used;
 	public static void addClusterCounter()
 	{
 		clusterCount++;
@@ -21,20 +25,28 @@ public class Cell implements Comparable<Cell>{
 		this.x = x;
 		this.y = y;
 		this.num = num;
+		this.used = false;
 	}
 	
-	public int compareTo(Cell c)
+	public void setUsed()
 	{
-		if(this.num==c.num)
-			return 0;
-		
-		return this.num>c.num?1:-1;
-			
+		this.used = true;
+	}
+	
+	public boolean isUsed()
+	{
+		return this.used;
+	}
+	
+	@Override
+	public int compareTo(Cell c)
+	{	
+		return this.num>=c.num?-1:1;
 	}
 	
 	public String toString()
 	{
-		return String.format("%d %d %d %d", this.x, this.y, this.num, this.cluster*100);
+		return String.format("%d %d %d %d\r\n", this.x, this.y, this.num, this.cluster);
 	}
 
 	

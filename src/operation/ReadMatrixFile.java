@@ -25,6 +25,8 @@ public class ReadMatrixFile extends AbsReadFile {
 	
 	public static HashMap<String, Cell> denseCells=new HashMap<String, Cell>();
 	public static int threshold = config.threshold;
+	
+	
 	/* (non-Javadoc)
 	 * @see operation.AbsReadFile#dealWithFile(java.io.File)
 	 * 用于处理100*100的event文件

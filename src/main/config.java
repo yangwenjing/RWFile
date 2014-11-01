@@ -12,5 +12,5 @@ public class config {
 	public static String nodes_files_in_dir = "C:\\step22-3";
 	public static String txt_file_dir = "D:\\region\\100X100data";
 	public static String output_file_dir = "D:\\region\\output";
-	public static int threshold=480;
+	public static int threshold=80;
 }
