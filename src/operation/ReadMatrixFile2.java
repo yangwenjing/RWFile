@@ -61,18 +61,32 @@ public class ReadMatrixFile2 extends AbsReadFile {
 				int num = Integer.parseInt(arrl[2]);
 				
 				Cell c = new Cell(x,y,num);
-				if(pass(c))
-				{
-					String key = getKey(x,y);
-					cellsMap.put(key, c);
-					cellList.add(c);
-				}
+				//if(pass(c))
+				//{
+				String key = getKey(x,y);
+				cellsMap.put(key, c);
+				cellList.add(c);
+				//}
 				
 				
 			}
 			reader.close();
 			fr.close();
 			
+			/**
+			 * 补充区域为0的点
+			 */
+			for(int i=0;i<100;i++)
+			{
+				for(int j=0;j<100;j++)
+				{
+					String key = getKey(i,j);
+					if(!cellsMap.containsKey(key))
+					{
+						cellsMap.put(key, new Cell(i,j,0));
+					}
+				}
+			}
 			/**
 			 * 区域识别算法
 			 */
@@ -136,27 +150,42 @@ public class ReadMatrixFile2 extends AbsReadFile {
 			if(!c.isUsed())
 			{
 				Cell.addClusterCounter();
-				if(Cell.clusterCount<=0)
-					break;
+//				if(Cell.clusterCount<=0)
+//					break;
 				c.setCluster();
 				
-				scaleCount=0;
-				queue.enqueue(c);
-				scaleCount++;
-				while(!queue.isEmpty())
-				{
-					Cell pcell = queue.dequeue();
-					pcell.setUsed();
-					enqueueNext(pcell.x, pcell.y-1);
-					enqueueNext(pcell.x-1,pcell.y);
-					enqueueNext(pcell.x,pcell.y+1);
-					enqueueNext(pcell.x+1,pcell.y);
-					enqueueNext(pcell.x-1,pcell.y-1);
-					enqueueNext(pcell.x-1,pcell.y+1);
-					enqueueNext(pcell.x+1,pcell.y-1);
-					enqueueNext(pcell.x+1,pcell.y+1);
+				
+					scaleCount=0;
+					queue.enqueue(c);
+					scaleCount++;
+					while(!queue.isEmpty())
+					{
 						
+						Cell pcell = queue.dequeue();
+						pcell.setUsed();
+						if(pass(c))
+						{
+							enqueueNext(pcell.x, pcell.y-1);
+							enqueueNext(pcell.x-1,pcell.y);
+							enqueueNext(pcell.x,pcell.y+1);
+							enqueueNext(pcell.x+1,pcell.y);
+							enqueueNext(pcell.x-1,pcell.y-1);
+							enqueueNext(pcell.x-1,pcell.y+1);
+							enqueueNext(pcell.x+1,pcell.y-1);
+							enqueueNext(pcell.x+1,pcell.y+1);
+						}
+						else{
+							enqueueNext_for_parse(pcell.x, pcell.y-1);
+							enqueueNext_for_parse(pcell.x-1,pcell.y);
+							enqueueNext_for_parse(pcell.x,pcell.y+1);
+							enqueueNext_for_parse(pcell.x+1,pcell.y);
+							enqueueNext_for_parse(pcell.x-1,pcell.y-1);
+							enqueueNext_for_parse(pcell.x-1,pcell.y+1);
+							enqueueNext_for_parse(pcell.x+1,pcell.y-1);
+							enqueueNext_for_parse(pcell.x+1,pcell.y+1);
+						}
 				}
+				
 			}
 		}
 	}
@@ -172,7 +201,30 @@ public class ReadMatrixFile2 extends AbsReadFile {
 		String key;
 		key = getKey(x,y);
 		
-		if(cellsMap.containsKey(key))
+		if(cellsMap.containsKey(key)&&pass(cellsMap.get(key)))
+		{
+			Cell next=cellsMap.get(key);
+			if(!next.isUsed())
+			{
+				next.setCluster();
+				scaleCount++;
+				queue.enqueue(next);
+			}
+		}
+	}
+	
+	/**
+	 * @param c
+	 * @param x
+	 * @param y
+	 */
+	public void enqueueNext_for_parse(int x, int y) {
+		if(scaleCount>regionScale)
+			return;
+		String key;
+		key = getKey(x,y);
+		
+		if(cellsMap.containsKey(key)&&!pass(cellsMap.get(key)))
 		{
 			Cell next=cellsMap.get(key);
 			if(!next.isUsed())
