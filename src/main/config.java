@@ -16,4 +16,6 @@ public class config {
 	public static int regionScale=150;
 	public static int regionCount=200;
 	public static String adjFileout="";
+	public static String contactsOutFile="D:\\trace\\step2";
+	public static String trace_files_in="D:\\trace\\step1";
 }
