@@ -18,4 +18,5 @@ public class config {
 	public static String adjFileout="";
 	public static String contactsOutFile="D:\\trace\\step2";
 	public static String trace_files_in="D:\\trace\\step1";
+	public static String contactsOutFile_step2="D:\\trace\\step3";
 }
