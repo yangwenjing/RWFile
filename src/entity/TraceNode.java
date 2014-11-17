@@ -1,14 +1,25 @@
 package entity;
 
+import java.util.Hashtable;
+
 public class TraceNode implements Comparable<TraceNode>{
 	public int id;
 	public int time;
 	public double lon;
 	public double lat;
 	
+//	public static Hashtable<Integer,Integer>idHt = new Hashtable<Integer,Integer>();
+//	
+//	public static int counter = -1;
 
 	public TraceNode(int id, int time, double lon, double lat) {
 		// TODO Auto-generated constructor stub
+//		if(!idHt.contains(id))
+//		{
+//			idHt.put(counter, id);
+//			counter++;
+//		}
+//		
 		this.id = id;
 		this.time = time;
 		this.lon = lon;

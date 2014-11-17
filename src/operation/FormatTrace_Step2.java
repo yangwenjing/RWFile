@@ -16,6 +16,11 @@ public class FormatTrace_Step2 extends AbsReadFile {
 	public static String out_file_path = config.contactsOutFile_step2;
 	public static List<TraceNode> traces = null;
 	public static List<TraceNode> output_traces = null;
+	public static int counter = -1;
+	public static int begin = 11*3600;
+	public static int end = 14*3600;
+	public static int tix = 10;
+	
 	/**
 	 * 读入一个文件
 	 * 对数据排序
@@ -26,6 +31,7 @@ public class FormatTrace_Step2 extends AbsReadFile {
 		// TODO 读入文件
 		FileReader fr;
 		traces =  new LinkedList<TraceNode>();
+		counter++;
 		output_traces =  new LinkedList<TraceNode>();
 		try {
 			fr = new FileReader(file);
@@ -41,7 +47,8 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			while((line = reader.readLine())!=null)
 			{
 				String[] s = line.split(" ");
-				int taxiid = Integer.parseInt(s[0]);
+				//int taxiid = Integer.parseInt(s[0]);
+				int taxiid = counter;
 				int time = Integer.parseInt(s[1]);
 				double lon = Double.parseDouble(s[2]);
 				double lat = Double.parseDouble(s[3]);
@@ -56,18 +63,29 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			
 			//插值
 			System.out.println("insert:"+file.getName());
-			for(int i=11*3600;i<14*3600;i+=10)
+			
+			//output_traces栈顶入队。
+			int index = 0;
+			TraceNode tn0 = traces.get(index);
+			TraceNode tn1 = traces.get(index+1);
+			TraceNode tn = getThirdTN(tn0, tn1, begin);
+			output_traces.add(tn);
+			for(int time=begin+tix;time<end;time+=tix)
 			{
-				int index=0;
-				TraceNode tn = null;
-				
-				do{
-					tn = getTraceNode(index,i);
+				while(tn0.time<time&&index<traces.size()-1)
+				{
+					output_traces.add(tn0);
 					index++;
-				}while(tn==null&&index<=traces.size()-3);
+					System.out.println("Size:"+index);
+					
+					
+					tn0 = traces.get(index);
+				}
+				
+				tn1 = output_traces.get(output_traces.size()-1);
+				tn = getThirdTN(tn0, tn1, time);
 				output_traces.add(tn);
 			}
-			
 			
 			/**
 			 * 打印
@@ -75,10 +93,10 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			System.out.println("Print:"+file.getName());
 			File fileout = new File(out_file_path +"\\"+file.getName());
 			FileWriter fw = new FileWriter(fileout, true);
-			for(TraceNode tn:output_traces)
+			for(TraceNode tni:output_traces)
 			{
-				if(tn==null)continue;
-				fw.write(tn.toString()+"\r\n");
+				if(tni==null)continue;
+				fw.write(tni.toString()+"\r\n");
 			}
 			fw.close();
 			
@@ -88,47 +106,15 @@ public class FormatTrace_Step2 extends AbsReadFile {
 		}
 		
 	}
-	
-	public TraceNode getTraceNode(int begin, int time)
-	{
-		TraceNode tn0 = traces.get(begin);
-		TraceNode tn1 = traces.get(begin+1);
-		TraceNode tn2 = traces.get(begin+2);
-		
-		if(tn0.time==time)return tn0;
-		if(tn1.time==time)return tn1;
-		if(tn2.time==time)return tn2;
-		
-		if(tn0.time<time&tn1.time<time&tn2.time<time)
-		{
-			return null;
-		}	
-		
-		if(tn0.time>time&tn1.time>time&tn2.time>time)
-		{
-			if(tn0.time!=tn1.time)
-				return getThirdTN(tn0, tn1, time);
-			
-			if(tn1.time!=tn2.time)
-				return getThirdTN(tn1, tn2, time);
-			
-			return null;
-		}
-		
-		if((tn0.time<time)^(tn1.time<time))
-			return getThirdTN(tn0, tn1, time);
-		
-		if((tn1.time<time)^(tn2.time<time))
-			return getThirdTN(tn1, tn2, time);
-	
-		return null;
-	}
-	
+
 	private TraceNode getThirdTN(TraceNode tn1, TraceNode tn2, int time) {
 		// TODO Auto-generated method stub
 		double lon = (tn2.lon-tn1.lon)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lon;
-		double lat = (tn2.lat-tn1.lat)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lon;
-		
+		double lat = (tn2.lat-tn1.lat)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lat;
+		lon = lon<0?0:lon;
+		lat = lat<0?0:lat;
+		lon = lon>24445?24445:lon;
+		lat = lat>23875?23875:lat;
 		return new TraceNode(tn1.id, time, lon,lat);
 	}
 
