@@ -67,7 +67,15 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			//output_traces’ª∂•»Î∂”°£
 			int index = 0;
 			TraceNode tn0 = traces.get(index);
+			
+			int i =1;
 			TraceNode tn1 = traces.get(index+1);
+			while(tn1.time==tn0.time)
+			{
+				i++;
+				tn1 = traces.get(index+i);
+			}
+			
 			TraceNode tn = getThirdTN(tn0, tn1, begin);
 			output_traces.add(tn);
 			for(int time=begin+tix;time<end;time+=tix)
@@ -77,10 +85,11 @@ public class FormatTrace_Step2 extends AbsReadFile {
 					output_traces.add(tn0);
 					index++;
 					System.out.println("Size:"+index);
-					
-					
 					tn0 = traces.get(index);
 				}
+				
+				if(tn0.time<time)
+					tn0 = output_traces.get(output_traces.size()-2);
 				
 				tn1 = output_traces.get(output_traces.size()-1);
 				tn = getThirdTN(tn0, tn1, time);
@@ -109,12 +118,15 @@ public class FormatTrace_Step2 extends AbsReadFile {
 
 	private TraceNode getThirdTN(TraceNode tn1, TraceNode tn2, int time) {
 		// TODO Auto-generated method stub
+		if(tn1.time==time)return tn1;
+		if(tn2.time==time)return tn2;
+		
 		double lon = (tn2.lon-tn1.lon)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lon;
 		double lat = (tn2.lat-tn1.lat)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lat;
-		lon = lon<0?0:lon;
-		lat = lat<0?0:lat;
-		lon = lon>24445?24445:lon;
-		lat = lat>23875?23875:lat;
+		lon = (lon<0?0:lon);
+		lat = (lat<0?0:lat);
+		lon = (lon>24445?24445:lon);
+		lat = (lat>23875?23875:lat);
 		return new TraceNode(tn1.id, time, lon,lat);
 	}
 
