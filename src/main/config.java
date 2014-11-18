@@ -19,4 +19,6 @@ public class config {
 	public static String contactsOutFile="D:\\trace\\step2";
 	public static String trace_files_in="D:\\trace\\step1";
 	public static String contactsOutFile_step2="D:\\trace\\step3";
+	public static String ict_out_put="D:\\ICT\\out";
+	public static String ict_in_put="D:\\ICT\\in";
 }
