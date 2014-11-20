@@ -126,7 +126,7 @@ public class FormatTrace_Step2 extends AbsReadFile {
 		lon = (lon<0?0:lon);
 		lat = (lat<0?0:lat);
 		lon = (lon>24445?24445:lon);
-		lat = (lat>23875?23875:lat);
+		lat = (lat>23584?23584:lat);
 		return new TraceNode(tn1.id, time, lon,lat);
 	}
 
