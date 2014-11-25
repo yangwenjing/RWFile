@@ -17,9 +17,9 @@ public class FormatTrace_Step2 extends AbsReadFile {
 	public static List<TraceNode> traces = null;
 	public static List<TraceNode> output_traces = null;
 	public static int counter = -1;
-	public static int begin = 11*3600;
-	public static int end = 14*3600;
-	public static int tix = 10;
+	public static int begin = 0;
+	public static int end = 12600;
+	public static int tix = 5;
 	
 	/**
 	 * 读入一个文件
@@ -82,7 +82,10 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			{
 				while(tn0.time<time&&index<traces.size()-1)
 				{
-					output_traces.add(tn0);
+					if(tn0.time>output_traces.get(output_traces.size()-1).time)
+					{
+						output_traces.add(tn0);
+					}
 					index++;
 					System.out.println("Size:"+index);
 					tn0 = traces.get(index);
@@ -93,6 +96,7 @@ public class FormatTrace_Step2 extends AbsReadFile {
 				
 				tn1 = output_traces.get(output_traces.size()-1);
 				tn = getThirdTN(tn0, tn1, time);
+				if(tn==null)continue;
 				output_traces.add(tn);
 			}
 			
@@ -118,16 +122,23 @@ public class FormatTrace_Step2 extends AbsReadFile {
 
 	private TraceNode getThirdTN(TraceNode tn1, TraceNode tn2, int time) {
 		// TODO Auto-generated method stub
+		if(tn1==null)return null;
+		if(tn2==null)return null;
 		if(tn1.time==time)return tn1;
 		if(tn2.time==time)return tn2;
 		
 		double lon = (tn2.lon-tn1.lon)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lon;
 		double lat = (tn2.lat-tn1.lat)*(double)(time-tn1.time)/(double)(tn2.time-tn1.time)+tn1.lat;
-		lon = (lon<0?0:lon);
-		lat = (lat<0?0:lat);
-		lon = (lon>24445?24445:lon);
-		lat = (lat>23584?23584:lat);
-		return new TraceNode(tn1.id, time, lon,lat);
+		
+		if(lon<0||lat<0||lon>24445||lat>23584)
+		{
+			return null;
+		}
+		//lon = (lon<0?0:lon);
+		//lat = (lat<0?0:lat);
+		//lon = (lon>24445?24445:lon);
+		//lat = (lat>23584?23584:lat);
+		return new TraceNode(tn1.id,time,lon,lat);
 	}
 
 	public static void main(String[] args)
