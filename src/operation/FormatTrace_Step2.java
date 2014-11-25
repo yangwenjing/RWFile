@@ -18,7 +18,7 @@ public class FormatTrace_Step2 extends AbsReadFile {
 	public static List<TraceNode> output_traces = null;
 	public static int counter = -1;
 	public static int begin = 0;
-	public static int end = 12600;
+	public static int end = 11000;
 	public static int tix = 5;
 	
 	/**
@@ -68,35 +68,48 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			int index = 0;
 			TraceNode tn0 = traces.get(index);
 			
-			int i =1;
-			TraceNode tn1 = traces.get(index+1);
-			while(tn1.time==tn0.time)
-			{
-				i++;
-				tn1 = traces.get(index+i);
-			}
+//			int i =1;
+//			TraceNode tn1 = traces.get(index+1);
+//			while(tn1.time==tn0.time)
+//			{
+//				i++;
+//				tn1 = traces.get(index+i);
+//			}
 			
-			TraceNode tn = getThirdTN(tn0, tn1, begin);
-			output_traces.add(tn);
-			for(int time=begin+tix;time<end;time+=tix)
+			//TraceNode tn = getThirdTN(tn0, tn1, begin);
+			output_traces.add(tn0);
+			for(int time=(tn0.time/5*5)+5;time<end;time+=tix)
 			{
 				while(tn0.time<time&&index<traces.size()-1)
 				{
-					if(tn0.time>output_traces.get(output_traces.size()-1).time)
-					{
+					
+					if(output_traces.get(output_traces.size()-1).time!=tn0.time)
 						output_traces.add(tn0);
-					}
+					
 					index++;
 					System.out.println("Size:"+index);
 					tn0 = traces.get(index);
 				}
 				
-				if(tn0.time<time)
-					tn0 = output_traces.get(output_traces.size()-2);
-				
-				tn1 = output_traces.get(output_traces.size()-1);
-				tn = getThirdTN(tn0, tn1, time);
-				if(tn==null)continue;
+				if(tn0.time==time)
+				{
+					output_traces.add(tn0);
+					continue;
+				}
+				int ii = 1;
+				TraceNode tn1 = output_traces.get(output_traces.size()-ii);
+				while(ii<output_traces.size()&&tn1.time==tn0.time)
+				{
+					ii++;
+					tn1 = output_traces.get(output_traces.size()-ii);
+					
+				}
+				TraceNode tn = getThirdTN(tn0, tn1, time);
+				if(tn==null)
+				{
+					System.out.println("³ö´íÁËÕ¦°ì£¿¡£¡£¡£");
+					continue;
+				}
 				output_traces.add(tn);
 			}
 			
@@ -109,7 +122,8 @@ public class FormatTrace_Step2 extends AbsReadFile {
 			for(TraceNode tni:output_traces)
 			{
 				if(tni==null)continue;
-				fw.write(tni.toString()+"\r\n");
+				if(tni.time%5==0)
+					fw.write(tni.toString()+"\r\n");
 			}
 			fw.close();
 			

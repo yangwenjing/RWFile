@@ -30,7 +30,10 @@ public class TraceNode implements Comparable<TraceNode>{
 	@Override
 	public int compareTo(TraceNode arg0) {
 		// TODO Auto-generated method stub
-		return this.time>arg0.time?1:-1;
+		if(this.time-arg0.time>0)return 1;
+		if(this.time-arg0.time<0)return -1;
+		else return 0;
+		//return this.time>arg0.time?1:-1;
 	}
 	
 	public String toString()
