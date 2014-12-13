@@ -23,7 +23,7 @@ public class ReadAdjgraphFile extends AbsReadFile {
 		FileReader fr;
 		
 		try {
-			bughere!
+			
 			fr = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fr);
 			String line;
@@ -39,7 +39,6 @@ public class ReadAdjgraphFile extends AbsReadFile {
 				line = line.replace("LINESTRING", "").replace("(", "").replace(")", "");
 				String[] lines = line.split(",");
 				
-				//fw.write(lines[0].trim()+"\r\n");
 				fw.write(lines[1].trim()+"\r\n");
 				fw.write("\r\n");
 				

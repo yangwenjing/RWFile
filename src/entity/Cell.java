@@ -30,6 +30,15 @@ public class Cell implements Comparable<Cell>{
 		this.used = false;
 	}
 	
+	public Cell(int x, int y, int num, int id)
+	{
+		this.x = x;
+		this.y = y;
+		this.num = num;
+		this.cluster = id;
+		this.used = false;
+	}
+	
 	public void setUsed()
 	{
 		this.used = true;
@@ -48,7 +57,7 @@ public class Cell implements Comparable<Cell>{
 	
 	public String toString()
 	{
-		return String.format("%d %d %d %d\r\n", this.x, this.y, this.num, this.cluster);
+		return String.format("%d %d %d %d", this.x, this.y, this.num, this.cluster);
 	}
 
 	
