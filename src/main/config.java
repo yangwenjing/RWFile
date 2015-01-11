@@ -19,4 +19,7 @@ public class config {
 	public static String contactsOutFile="D:\\trace\\step2";
 	public static String trace_files_in="D:\\trace\\step1";
 	public static String formated_trace_dir="";
+	public static String event_dis_in="C:\\Users\\chnhideyoshi\\Desktop\\event_dis\\100X100";
+	public static String event_dis_out="C:\\Users\\chnhideyoshi\\Desktop\\event_dis\\90X75";
+	public static String mif2txt_dir="C:\\Users\\chnhideyoshi\\Desktop\\road\\out";
 }
