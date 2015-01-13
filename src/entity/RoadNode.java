@@ -16,6 +16,12 @@ public class RoadNode {
 	/**
 	 * @param args
 	 */
+	
+	public String toString()
+	{
+		return this.x+" "+this.y;
+	}
+	
 	public RoadNode(double lon,double lat, String id){
 		this.x = lon;
 		this.y = lat;

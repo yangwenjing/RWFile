@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
 import entity.RoadNode;
 import entity.Queue;
 
@@ -16,10 +17,30 @@ public class ExtractSubMap extends AbsReadFile {
 	public Queue<RoadNode>queue = new Queue<RoadNode>();
 	public void findMap()
 	{
-		RoadNode node = null;
+		RoadNode node = RoadNode.nodes.get(0);
 		queue.enqueue(node);
 		while(!queue.isEmpty())
 		{
+			node = queue.dequeue();
+			this.used_nodes.add(node);//出队列就会被设置为已用
+			int i=0;
+			while(i<node.neighbor.size())
+			{
+				RoadNode neinode = node.neighbor.get(i);
+				if(neinode.neighbor.contains(node))
+				{
+					System.out.println(node.toString()+","+neinode.toString());
+					neinode.neighbor.remove(node);
+				}
+				
+				if(!this.used_nodes.contains(neinode))
+				{
+					queue.enqueue(neinode);
+				}
+				i++;
+			}
+			
+			node.neighbor.clear();//将所有的邻居都去掉。
 			
 		}
 		
@@ -63,9 +84,13 @@ public class ExtractSubMap extends AbsReadFile {
 					}
 				}
 				road_id_bk=road_id;
-				
-		
 			}
+			//End 读文件完毕
+			
+			
+			
+			findMap();
+			
 			
 			fw.close();
 		} catch (FileNotFoundException e) {
@@ -83,6 +108,20 @@ public class ExtractSubMap extends AbsReadFile {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String dir_in = "";
+		ExtractSubMap readfile = new ExtractSubMap();
+		try{
+			readfile.readfile(dir_in);
+			
+		}catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
 
 	}
 
