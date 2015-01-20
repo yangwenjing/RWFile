@@ -12,24 +12,32 @@ import entity.RoadNode;
 import entity.Queue;
 
 public class ExtractSubMap extends AbsReadFile {
-	public static String out_file_dir = "";
+	public static String out_file_dir = "C:\\Users\\chnhideyoshi\\Desktop\\road\\map2009_out.wkt";
 	public List<RoadNode> used_nodes = new ArrayList<RoadNode>();
 	public Queue<RoadNode>queue = new Queue<RoadNode>();
-	public void findMap()
+	public File fileout = new File(out_file_dir);
+	
+	public void findMap() throws IOException
 	{
-		RoadNode node = RoadNode.nodes.get(0);
+		FileWriter fw = new FileWriter(fileout);
+		String key = RoadNode.nodes.keys().nextElement();
+		RoadNode node = RoadNode.nodes.get(key);
 		queue.enqueue(node);
 		while(!queue.isEmpty())
 		{
 			node = queue.dequeue();
 			this.used_nodes.add(node);//出队列就会被设置为已用
+			if(node.neighbor==null)
+				continue;
 			int i=0;
 			while(i<node.neighbor.size())
 			{
 				RoadNode neinode = node.neighbor.get(i);
 				if(neinode.neighbor.contains(node))
 				{
-					System.out.println(node.toString()+","+neinode.toString());
+					System.out.println(node.toString()+"\r\n"+neinode.toString()+"\r\n");
+					String s=String.format("LINESTRING (%s, %s)\r\n\r\n", node.toString(),neinode.toString());
+					fw.write(s);
 					neinode.neighbor.remove(node);
 				}
 				
@@ -43,7 +51,7 @@ public class ExtractSubMap extends AbsReadFile {
 			node.neighbor.clear();//将所有的邻居都去掉。
 			
 		}
-		
+		fw.close();
 	}
 	
 	
@@ -59,8 +67,8 @@ public class ExtractSubMap extends AbsReadFile {
 		try {
 			fr = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fr);
-			File fileout = new File(out_file_dir+"//"+file.getName());
-			FileWriter fw = new FileWriter(fileout);
+			//File fileout = new File(out_file_dir+"//"+file.getName());
+			//FileWriter fw = new FileWriter(fileout);
 			
 			String line;
 			RoadNode node = null;
@@ -68,7 +76,7 @@ public class ExtractSubMap extends AbsReadFile {
 			RoadNode node_next = null;
 			while((line = reader.readLine())!=null)
 			{
-				String s[] = line.split(" ");
+				String s[] = line.trim().split("\t");
 				double lon = Double.parseDouble(s[0]);
 				double lat = Double.parseDouble(s[1]);
 				int road_id = Integer.parseInt(s[2]);
@@ -87,12 +95,12 @@ public class ExtractSubMap extends AbsReadFile {
 			}
 			//End 读文件完毕
 			
-			
+			System.out.println("文件读入完毕！\r\n开始输出连通地图");
 			
 			findMap();
 			
 			
-			fw.close();
+			//fw.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +116,7 @@ public class ExtractSubMap extends AbsReadFile {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String dir_in = "";
+		String dir_in = "C:\\Users\\chnhideyoshi\\Desktop\\road\\map2009.txt";
 		ExtractSubMap readfile = new ExtractSubMap();
 		try{
 			readfile.readfile(dir_in);

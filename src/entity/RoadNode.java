@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -37,6 +38,10 @@ public class RoadNode {
 	
 	public void addNeighbor(RoadNode node)
 	{
+		if(this.neighbor==null)
+		{
+			this.neighbor = new ArrayList<RoadNode>();
+		}
 		if(!this.neighbor.contains(node))
 		{
 			this.neighbor.add(node);
