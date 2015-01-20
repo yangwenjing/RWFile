@@ -8,7 +8,7 @@ public class RoadNode {
 	public double x;
 	public double y;
 	//public int road_id;
-	//public int type;
+	public int type=5;
 	public String id;
 	
 	public List<RoadNode>neighbor;
@@ -27,8 +27,17 @@ public class RoadNode {
 		this.x = lon;
 		this.y = lat;
 		this.id = id;
+		this.type = 5;
 	}
 	
+	public RoadNode(double lon,double lat, String id, int _type){
+		this.x = lon;
+		this.y = lat;
+		this.id = id;
+		this.type = _type;
+	}
+
+
 	public static String getNodeId(double lon,double lat)
 	{
 		

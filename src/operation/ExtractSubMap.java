@@ -12,14 +12,25 @@ import entity.RoadNode;
 import entity.Queue;
 
 public class ExtractSubMap extends AbsReadFile {
-	public static String out_file_dir = "C:\\Users\\chnhideyoshi\\Desktop\\road\\map2009_out.wkt";
+	public static String out_file_dir = "C:\\Users\\chnhideyoshi\\Desktop\\road\\map2009_out_2.wkt";
+	public static String out_file_dir_2 = "C:\\Users\\chnhideyoshi\\Desktop\\road\\";
+	
 	public List<RoadNode> used_nodes = new ArrayList<RoadNode>();
+	public List<RoadNode> output_nodes = new ArrayList<RoadNode>();
 	public Queue<RoadNode>queue = new Queue<RoadNode>();
 	public File fileout = new File(out_file_dir);
 	
 	public void findMap() throws IOException
 	{
 		FileWriter fw = new FileWriter(fileout);
+		File out1 = new File(out_file_dir_2+"out_type1.txt");
+		File out2 = new File(out_file_dir_2+"out_type2.txt");
+		File out3 = new File(out_file_dir_2+"out_type3.txt");
+		File out4 = new File(out_file_dir_2+"out_type4.txt");
+		FileWriter fw_t1 = new FileWriter(out1);
+		FileWriter fw_t2 = new FileWriter(out2);
+		FileWriter fw_t3 = new FileWriter(out3);
+		FileWriter fw_t4 = new FileWriter(out4);
 		String key = RoadNode.nodes.keys().nextElement();
 		RoadNode node = RoadNode.nodes.get(key);
 		queue.enqueue(node);
@@ -39,6 +50,28 @@ public class ExtractSubMap extends AbsReadFile {
 					String s=String.format("LINESTRING (%s, %s)\r\n\r\n", node.toString(),neinode.toString());
 					fw.write(s);
 					neinode.neighbor.remove(node);
+					
+					if(!this.output_nodes.contains(neinode))
+					{	
+						String s2 = neinode.toString()+"\r\n"; 
+						
+						if(neinode.type==1)
+						{
+							fw_t1.write(s2);
+						}
+						else if(neinode.type==2)
+						{
+							fw_t2.write(s2);
+						}
+						else if(neinode.type==3)
+						{
+							fw_t3.write(s2);
+						}
+						else{
+							fw_t4.write(s2);
+						}
+						this.output_nodes.add(neinode);
+					}
 				}
 				
 				if(!this.used_nodes.contains(neinode))
@@ -49,9 +82,32 @@ public class ExtractSubMap extends AbsReadFile {
 			}
 			
 			node.neighbor.clear();//将所有的邻居都去掉。
+			if(this.output_nodes.contains(node))
+				continue;
+			String s = node.toString()+"\r\n";
+			if(node.type==1)
+			{
+				fw_t1.write(s);
+			}
+			else if(node.type==2)
+			{
+				fw_t2.write(s);
+			}
+			else if(node.type==3)
+			{
+				fw_t3.write(s);
+			}
+			else{
+				fw_t4.write(s);
+			}
+			this.output_nodes.add(node);
 			
 		}
 		fw.close();
+		fw_t1.close();
+		fw_t2.close();
+		fw_t3.close();
+		fw_t4.close();
 	}
 	
 	
@@ -83,6 +139,10 @@ public class ExtractSubMap extends AbsReadFile {
 				int type = Integer.parseInt(s[3]);
 				node = node_next;
 				node_next = RoadNode.Factory(lon, lat);
+				if(node_next.type>type)
+				{
+					node_next.type = type;
+				}
 				if(road_id_bk==road_id)
 				{
 					if(node!=null)
