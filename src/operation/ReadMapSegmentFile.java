@@ -32,7 +32,7 @@ public class ReadMapSegmentFile extends ReadSegmentFile {
 					Neighbor nb = SegmentFactory.neighbors.get(entry.getKey());
 					if(usedNodeArr.contains(nb.node.id))
 						continue;
-					traverse(nb);
+					traverse(nb);                                                                                                 
 					break;
 				}
 				
