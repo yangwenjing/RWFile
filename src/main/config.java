@@ -22,4 +22,9 @@ public class config {
 	public static String event_dis_in="C:\\Users\\chnhideyoshi\\Desktop\\event_dis\\100X100";
 	public static String event_dis_out="C:\\Users\\chnhideyoshi\\Desktop\\event_dis\\90X75";
 	public static String mif2txt_dir="C:\\Users\\chnhideyoshi\\Desktop\\road\\out";
+	public static String contactsOutFile_step2="D:\\trace\\step3";
+	public static String contactsOutFile_step3="D:\\trace\\step4";
+	public static String ict_out_put="D:\\ICT\\out";
+	public static String ict_in_put="D:\\ICT\\in";
+
 }

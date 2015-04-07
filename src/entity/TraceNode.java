@@ -1,4 +1,6 @@
 package entity;
+import java.util.Hashtable;
+
 
 public class TraceNode implements Comparable<TraceNode>{
 	public int taxiid;
@@ -9,6 +11,7 @@ public class TraceNode implements Comparable<TraceNode>{
 	public TraceNode(int taxiid, int time, double lon, double lat)
 	{
 		this.taxiid = taxiid;
+		this.id = id;
 		this.time = time;
 		this.lon = lon;
 		this.lat = lat;
@@ -27,8 +30,10 @@ public class TraceNode implements Comparable<TraceNode>{
 
 	@Override
 	public int compareTo(TraceNode arg0) {
-		// TODO Auto-generated method stub
-		return this.time>=arg0.time?1:-1;
+		if(this.time-arg0.time>0)return 1;
+		if(this.time-arg0.time<0)return -1;
+		else return 0;
+		//return this.time>arg0.time?1:-1;
 	}
 
 }

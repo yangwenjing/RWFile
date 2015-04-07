@@ -23,7 +23,7 @@ public class ReadAdjgraphFile extends AbsReadFile {
 		FileReader fr;
 		
 		try {
-			
+
 			fr = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fr);
 			String line;

@@ -12,7 +12,7 @@ import main.config;
 
 public class Read2FormatTrace extends AbsReadFile {
 	public static String out_file_path = config.contactsOutFile;
-	public static Hashtable<String,FileWriter> taxiidHt = new Hashtable<String, FileWriter>();
+//	public static Hashtable<String,FileWriter> taxiidHt = new Hashtable<String, FileWriter>();
 	//public static List<File> outfiles = new ArrayList<File>();
 
 
@@ -39,15 +39,25 @@ public class Read2FormatTrace extends AbsReadFile {
 				int time = Integer.parseInt(s[1]);
 				String lon = s[2];
 				String lat = s[3];
-				if(!taxiidHt.contains(taxiid))
-				{
+				//if(!taxiidHt.contains(taxiid))
+				//{
 					File fileout = new File(out_file_path+"\\"+taxiid+".txt");
 					FileWriter fw = new FileWriter(fileout, true);
-					taxiidHt.put(taxiid, fw);
-				}
-				
-				taxiidHt.get(taxiid).write(String.format("%s %d %s %s\n", taxiid,time,lon,lat));
+					//taxiidHt.put(taxiid, fw);
+				//}
+				System.out.println(String.format("%s %d %s %s\r\n", taxiid,time,lon,lat));
+				//taxiidHt.get(taxiid).append((String.format("%s %d %s %s\r\n", taxiid,time,lon,lat)));
+				fw.write(String.format("%s %d %s %s\r\n", taxiid,time,lon,lat));
+				fw.close();
 			}
+			
+//			for(String key:taxiidHt.keySet())
+//			{
+//				taxiidHt.get(key).close();
+//				taxiidHt.remove(key);
+//			}
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
