@@ -53,7 +53,7 @@ public class ExtractSubMap extends AbsReadFile {
 					
 					if(!this.output_nodes.contains(neinode))
 					{	
-						String s2 = neinode.toString()+"\r\n"; 
+						String s2 = String.format("POINT (%s)\r\n\r\n", neinode.toString()); 
 						
 						if(neinode.type==1)
 						{
@@ -84,7 +84,7 @@ public class ExtractSubMap extends AbsReadFile {
 			node.neighbor.clear();//将所有的邻居都去掉。
 			if(this.output_nodes.contains(node))
 				continue;
-			String s = node.toString()+"\r\n";
+			String s = String.format("POINT (%s)\r\n\r\n", node.toString());
 			if(node.type==1)
 			{
 				fw_t1.write(s);
