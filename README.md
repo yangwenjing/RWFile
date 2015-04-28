@@ -1,4 +1,4 @@
-RWFile
+﻿****RWFile
 ======
 
 Reading and Writing Txt File, 主要思路是使用一个抽象类，实现读操作。具体处理操作为实现 抽象函数 dealwithfile。针对具体代码已经有实现的类。
