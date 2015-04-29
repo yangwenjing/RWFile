@@ -26,5 +26,17 @@ public class config {
 	public static String contactsOutFile_step3="D:\\trace\\step4";
 	public static String ict_out_put="D:\\ICT\\out";
 	public static String ict_in_put="D:\\ICT\\in";
+	
+	/**
+	 * config for SpiltFile2Hour
+	 */
+	public static String split2Hours_out="D:\\Documents\\MASTER\\START\\experiments\\区域转移\\out";
+	public static String split2Hours_in="D:\\Documents\\MASTER\\START\\experiments\\区域转移\\区域转移";
+	
+	/**
+	 * 对每个小时统计
+	 */
+	
+	public static String statistic_out="D:\\Documents\\MASTER\\START\\experiments\\区域转移\\event_log.txt";
 
 }
